@@ -1,0 +1,24 @@
+{
+  "server_info": {
+    "name": "Soft Dashboard",
+    "owner": "Sage",
+    "member_count": 1289
+  },
+  "ban_list": [
+    {"user": "User123", "reason": "Spamming"},
+    {"user": "BadActor", "reason": "Raid detected"}
+  ],
+  "audit_logs": [
+    {"action": "Deleted message", "by": "ModA", "at": "2025-07-31 18:24"},
+    {"action": "Banned user", "by": "AdminX", "at": "2025-07-30 14:10"}
+  ],
+  "user_behavior": {
+    "active_today": 103,
+    "most_active_user": "CoolUser"
+  },
+  "security_tools": {
+    "anti_raid": true,
+    "anti_spam": true,
+    "link_protection": true
+  }
+}
