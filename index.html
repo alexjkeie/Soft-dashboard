@@ -1,163 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Soft Dashboard</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/616/616408.png" />
   <style>
-    :root {
-      --bg: #1e1f29;
-      --panel: #2a2b38;
-      --accent: #8bd3dd;
-      --text: #f2f2f2;
-      --hover: #3d3e4e;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
     body {
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive;
+      background: linear-gradient(to right, #ffe0f0, #fff0f5);
+      color: #444;
     }
-
-    aside {
-      width: 230px;
-      background: var(--panel);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      border-right: 2px solid var(--accent);
-    }
-
-    aside h1 {
-      font-size: 1.4em;
+    header {
+      background: #ffb6c1;
+      padding: 1rem 2rem;
       text-align: center;
-      color: var(--accent);
-      margin-bottom: 20px;
+      font-size: 2rem;
+      color: white;
+      border-bottom: 4px solid #ff69b4;
+      animation: fadeIn 1s ease;
     }
-
-    .nav-link {
+    .menu {
       display: flex;
-      align-items: center;
-      padding: 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s;
+      justify-content: space-around;
+      padding: 1rem;
+      background: #fff0f5;
     }
-
-    .nav-link:hover {
-      background: var(--hover);
-    }
-
-    .nav-link i {
-      margin-right: 10px;
-      color: var(--accent);
-    }
-
-    main {
-      flex: 1;
-      padding: 30px;
-      overflow-y: auto;
-    }
-
-    section {
-      margin-bottom: 40px;
-      background: var(--panel);
-      padding: 20px;
+    .menu button {
+      background: #ffe6f0;
+      border: 2px solid #ff69b4;
       border-radius: 12px;
-      box-shadow: 0 0 10px #00000040;
-      transition: 0.3s ease;
+      padding: 0.7rem 1.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
     }
-
-    section:hover {
-      transform: translateY(-3px);
+    .menu button:hover {
+      background: #ffb6c1;
+      color: white;
     }
-
-    section h2 {
-      margin-bottom: 10px;
-      color: var(--accent);
+    .content {
+      text-align: center;
+      padding: 2rem;
     }
-
-    .footer {
-      position: absolute;
-      bottom: 10px;
-      left: 20px;
-      font-size: 0.9em;
-      color: #aaa;
+    .box {
+      background: white;
+      margin: 1rem auto;
+      border: 2px dashed #ffb6c1;
+      border-radius: 20px;
+      max-width: 600px;
+      padding: 1rem;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
     }
-
-    .footer span {
-      color: var(--accent);
+    .flower {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      width: 150px;
+      opacity: 0.4;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0 }
+      to { opacity: 1 }
     }
   </style>
 </head>
 <body>
-  <aside>
-    <h1>Soft Dashboard</h1>
-    <div class="nav-link"><i class="fas fa-server"></i> Server Info</div>
-    <div class="nav-link"><i class="fas fa-ban"></i> Ban List</div>
-    <div class="nav-link"><i class="fas fa-scroll"></i> Audit Logs</div>
-    <div class="nav-link"><i class="fas fa-chart-line"></i> Analytics</div>
-    <div class="nav-link"><i class="fas fa-shield-alt"></i> Security</div>
-    <div class="footer">Made with ❤️ by <span>Sage</span></div>
-  </aside>
+  <header>Soft Dashboard 🌸</header>
 
-  <main>
-    <section id="server-info">
-      <h2>🔧 Real-Time Server Info</h2>
-      <pre id="serverStats">Loading...</pre>
-    </section>
+  <div class="menu">
+    <button onclick="showSection('bans')">Ban List</button>
+    <button onclick="showSection('logs')">Audit Logs</button>
+    <button onclick="showSection('info')">Server Info</button>
+    <a href="/logout"><button>Logout</button></a>
+  </div>
 
-    <section id="ban-list">
-      <h2>🚫 Ban List</h2>
-      <ul id="banList">Loading...</ul>
-    </section>
+  <div class="content">
+    <div id="bans" class="box" style="display:none">
+      <h2>Banned Users</h2>
+      <ul id="banList"></ul>
+    </div>
+    <div id="logs" class="box" style="display:none">
+      <h2>Audit Logs</h2>
+      <ul id="logList"></ul>
+    </div>
+    <div id="info" class="box" style="display:none">
+      <h2>Server Info</h2>
+      <div id="serverInfo"></div>
+    </div>
+  </div>
 
-    <section id="audit-logs">
-      <h2>📜 Interactive Audit Logs</h2>
-      <ul id="logs">Loading...</ul>
-    </section>
-
-    <section id="analytics">
-      <h2>📊 Behavior Analytics</h2>
-      <pre id="analyticsData">Loading...</pre>
-    </section>
-
-    <section id="security">
-      <h2>🛡️ Security & Anti-Abuse</h2>
-      <ul id="securityTools">Loading...</ul>
-    </section>
-  </main>
+  <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" class="flower" />
 
   <script>
-    async function loadData() {
-      const res = await fetch("/data");
-      const data = await res.json();
+    function showSection(id) {
+      document.querySelectorAll('.box').forEach(div => div.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
 
-      document.getElementById("serverStats").textContent = JSON.stringify(data.server_info, null, 2);
-      document.getElementById("analyticsData").textContent = JSON.stringify(data.analytics, null, 2);
+      if (id === 'bans') fetch('/api/ban').then(res => res.json()).then(data => {
+        const ul = document.getElementById('banList');
+        ul.innerHTML = '';
+        data.forEach(u => ul.innerHTML += `<li>${u.id} — ${u.reason}</li>`);
+      });
 
-      const banList = document.getElementById("banList");
-      banList.innerHTML = data.bans.map(user => `<li>${user}</li>`).join("");
+      if (id === 'logs') fetch('/api/logs').then(res => res.json()).then(data => {
+        const ul = document.getElementById('logList');
+        ul.innerHTML = '';
+        data.forEach(log => ul.innerHTML += `<li>${log.action} - ${log.details}</li>`);
+      });
 
-      const logs = document.getElementById("logs");
-      logs.innerHTML = data.audit_logs.map(log => `<li>${log}</li>`).join("");
-
-      const sec = document.getElementById("securityTools");
-      sec.innerHTML = data.security.map(tool => `<li>${tool}</li>`).join("");
+      if (id === 'info') fetch('/api/server-info').then(res => res.json()).then(info => {
+        const div = document.getElementById('serverInfo');
+        div.innerHTML = `<b>Name:</b> ${info.name}<br><b>Owner:</b> ${info.owner}<br><b>Members:</b> ${info.members}<br><b>Status:</b> ${info.status}`;
+      });
     }
-
-    loadData();
   </script>
+
+  <footer style="text-align:center; padding:1rem; font-size:0.9rem; color:#888;">Made with 🌸 by Sage</footer>
 </body>
 </html>
