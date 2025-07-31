@@ -1,222 +1,422 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cyber Admin Panel</title>
+  <title>Soft Dashboard</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+    /* Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      user-select: none;
+    }
+
     body {
-      margin: 0; padding: 0; font-family: 'Share Tech Mono', monospace;
-      background: #0f111a;
-      color: #33ffcc;
-      overflow-x: hidden;
-    }
-    header {
-      background: linear-gradient(90deg, #0f111a, #062230);
-      padding: 1rem 2rem;
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid #33ffccaa;
-    }
-    header h1 {
-      margin: 0; font-size: 1.5rem;
-      color: #00ffe7;
-      letter-spacing: 2px;
-      text-shadow: 0 0 6px #00ffe7;
-    }
-    main {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
-      gap: 2rem;
-    }
-    section {
-      background: #141a2c;
-      border: 1px solid #33ffcc44;
-      border-radius: 12px;
-      padding: 1rem 1.5rem;
-      box-shadow: 0 0 20px #00ffe7aa;
-      min-height: 200px;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: #f0f0f3;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      overflow-x: hidden;
     }
-    section h2 {
-      margin: 0 0 1rem 0;
-      border-bottom: 1px solid #33ffcc55;
-      padding-bottom: 0.5rem;
-      font-weight: normal;
+
+    header {
+      padding: 1.5rem 2rem;
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      color: #fff;
+      text-shadow: 0 0 10px #fff8;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    header svg {
+      width: 32px;
+      height: 32px;
+      fill: #fff;
+      animation: pulse 2.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.1); }
+    }
+
+    nav {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem 0;
+      box-shadow: 0 2px 10px #4a47a3a8;
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      color: #ddd;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.4rem 1rem;
+      border-radius: 10px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      position: relative;
+      font-weight: 600;
+    }
+
+    nav button.active,
+    nav button:hover {
+      background: #fff;
+      color: #5a3ea1;
+      box-shadow: 0 0 10px #fff8;
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 2rem;
+      max-width: 960px;
+      margin: 0 auto 2rem auto;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      box-shadow: 0 10px 30px #4a47a380;
+      backdrop-filter: blur(12px);
+      color: #eee;
+      overflow: hidden;
+    }
+
+    section {
+      display: none;
+      animation: fadeInUp 0.7s ease forwards;
+    }
+    section.active {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 1.6rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: #5a3ea1cc;
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 6px 20px #3e3276aa;
+      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px #5a3ea1bb;
+    }
+
+    .card h3 {
+      font-weight: 700;
+      margin-bottom: 0.3rem;
       font-size: 1.3rem;
-      color: #00ffe7;
-      text-shadow: 0 0 5px #00ffe7aa;
+      color: #fff;
+      letter-spacing: 1.2px;
     }
-    .server-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 2px solid #33ffccaa;
-      margin-bottom: 1rem;
-      box-shadow: 0 0 15px #00ffe7aa;
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
+
+    .card p {
+      font-weight: 600;
+      font-size: 2.6rem;
+      color: #ffe8ff;
+      text-shadow: 0 0 6px #c49bffcc;
     }
-    .stat {
-      font-size: 1.1rem;
-      margin: 0.3rem 0;
-      color: #33ffccdd;
-    }
+
+    /* Table */
     table {
       width: 100%;
       border-collapse: collapse;
-      color: #33ffccdd;
-      font-size: 0.9rem;
+      background: #5a3ea1cc;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px #3e3276aa;
     }
+
+    thead {
+      background: #4b2f90;
+    }
+
     th, td {
-      border: 1px solid #33ffcc44;
-      padding: 0.5rem;
+      padding: 0.75rem 1rem;
       text-align: left;
+      color: #eee;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-bottom: 1px solid #6b49b5;
     }
-    th {
-      background: #0f111a;
-      color: #00ffe7;
-      text-shadow: 0 0 3px #00ffe7bb;
-    }
+
     tbody tr:hover {
-      background: #06223088;
+      background: #6b49b5cc;
       cursor: default;
+      color: #fff;
     }
-    /* Scrollable tables */
-    .scroll-table {
-      overflow-x: auto;
-      max-height: 300px;
-      display: block;
+
+    /* Scroll for logs */
+    .scrollable {
+      max-height: 350px;
+      overflow-y: auto;
+      margin-top: 1rem;
+      border-radius: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: #a07cf0 transparent;
     }
+    .scrollable::-webkit-scrollbar {
+      width: 10px;
+    }
+    .scrollable::-webkit-scrollbar-thumb {
+      background-color: #a07cf0;
+      border-radius: 10px;
+    }
+    .scrollable::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* Footer */
     footer {
-      margin: 4rem auto 2rem auto;
       text-align: center;
-      color: #00ffe799;
-      font-size: 0.8rem;
+      padding: 1rem 0;
+      color: #dcd6f7cc;
+      font-size: 0.85rem;
+      letter-spacing: 1.1px;
+      font-weight: 600;
       user-select: none;
     }
-    /* Button style */
-    button {
-      background: #00ffe7;
+    footer a {
+      color: #f5e1ffcc;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Cute icon style */
+    .icon {
+      width: 26px;
+      height: 26px;
+      vertical-align: middle;
+      margin-right: 8px;
+      fill: #f3e8ffdd;
+      filter: drop-shadow(0 0 1px #9a7fffcc);
+      transition: transform 0.3s ease;
+    }
+    nav button.active .icon,
+    nav button:hover .icon {
+      transform: scale(1.2) rotate(10deg);
+      filter: drop-shadow(0 0 5px #d6bfff);
+    }
+
+    /* Button style for login/logout */
+    #auth-btn {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: #fff;
+      border-radius: 30px;
+      padding: 0.6rem 1.4rem;
+      color: #5a3ea1;
+      font-weight: 700;
+      font-size: 1rem;
       border: none;
-      padding: 0.4rem 0.8rem;
-      margin: 0.1rem 0.3rem;
-      border-radius: 6px;
-      font-family: 'Share Tech Mono', monospace;
-      font-weight: bold;
-      color: #0f111a;
       cursor: pointer;
-      box-shadow: 0 0 8px #00ffe7bb;
-      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 15px #a77dfd;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+      z-index: 99;
     }
-    button:hover {
-      background: #00ccb3;
-      box-shadow: 0 0 12px #00ccb3cc;
-    }
-    /* Search input */
-    input[type="search"] {
-      width: 100%;
-      padding: 0.4rem 0.6rem;
-      margin-bottom: 0.8rem;
-      border-radius: 6px;
-      border: 1px solid #33ffcc44;
-      background: #0f111a;
-      color: #33ffcc;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.95rem;
-      box-shadow: inset 0 0 6px #00ffe7aa;
-    }
-    /* Cyberpunk neon glow */
-    .glow-text {
-      color: #00ffe7;
-      text-shadow:
-         0 0 5px #00ffe7,
-         0 0 10px #00ffe7,
-         0 0 20px #00ffe7,
-         0 0 40px #00ffe7;
-    }
-    /* Loader animation */
-    .loader {
-      border: 4px solid #33ffcc33;
-      border-top: 4px solid #00ffe7;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      animation: spin 1s linear infinite;
-      margin: 2rem auto;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg);}
-      100% { transform: rotate(360deg);}
+    #auth-btn:hover {
+      background: #7d5eff;
+      color: #fff;
+      box-shadow: 0 6px 25px #8c68ff;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1 class="glow-text">Soft Admin Panel</h1>
-    <a href="/logout" style="color:#00ffe7;text-decoration:none;font-weight:bold;">Logout</a>
+    <svg class="icon" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="30" stroke="#fff" stroke-width="3" fill="none" />
+      <path d="M20 40 L32 20 L44 40 Z" fill="#b57aff" />
+    </svg>
+    Soft Dashboard
   </header>
+
+  <nav>
+    <button id="tab-dashboard" class="active" aria-label="Dashboard Tab">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z"/></svg>Dashboard
+    </button>
+    <button id="tab-logs" aria-label="Audit Logs Tab">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 6h10v2H4zm0 6h16v2H4z"/></svg>Audit Logs
+    </button>
+    <button id="tab-users" aria-label="User Actions Tab">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>User Actions
+    </button>
+    <button id="tab-flags" aria-label="Flags Tab">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M14.4 6l-.9 3h4.5l-1.8 6h-4.5l.9-3H7.2l.9-3H14.4z"/></svg>Flags
+    </button>
+  </nav>
+
   <main>
-    <section id="server-info">
-      <h2>Server Info</h2>
-      <div class="server-icon" id="server-icon"></div>
-      <div class="stat" id="server-name"></div>
-      <div class="stat" id="server-created"></div>
-      <div class="stat" id="member-count"></div>
-      <div class="stat" id="online-count"></div>
-      <div class="stat" id="channels-count"></div>
-      <div class="stat" id="roles-count"></div>
+    <section id="dashboard" class="active" aria-label="Dashboard Section">
+      <div class="stats-grid">
+        <div class="card">
+          <h3>Visits</h3>
+          <p id="visits-count">0</p>
+        </div>
+        <div class="card">
+          <h3>Total Bans</h3>
+          <p id="bans-count">0</p>
+        </div>
+        <div class="card">
+          <h3>Total Notes</h3>
+          <p id="notes-count">0</p>
+        </div>
+      </div>
+      <h3>Welcome to your Soft Dashboard!</h3>
+      <p>This dashboard shows your server's live stats and audit info. Use the tabs above to explore.</p>
     </section>
 
-    <section id="ban-list">
-      <h2>Ban List</h2>
-      <input type="search" id="ban-search" placeholder="Search by user ID or reason..." />
-      <div class="scroll-table">
-        <table>
+    <section id="logs" aria-label="Audit Logs Section">
+      <h3>Audit Logs</h3>
+      <div class="scrollable" role="log" aria-live="polite" aria-relevant="additions">
+        <table id="logs-table" aria-label="Audit logs table">
           <thead>
-            <tr><th>User ID</th><th>Reason</th><th>Banned At</th></tr>
+            <tr><th>Time (UTC)</th><th>User</th><th>Action</th><th>Details</th></tr>
           </thead>
-          <tbody id="ban-table-body"></tbody>
+          <tbody></tbody>
         </table>
       </div>
     </section>
 
-    <section id="staff-actions">
-      <h2>Staff Action Log</h2>
-      <input type="search" id="action-search" placeholder="Search by mod, target or reason..." />
-      <div class="scroll-table">
-        <table>
+    <section id="users" aria-label="User Actions Section">
+      <h3>User Actions</h3>
+      <div class="scrollable" aria-live="polite" aria-relevant="additions">
+        <table id="users-table" aria-label="User actions table">
           <thead>
-            <tr><th>Moderator ID</th><th>Action</th><th>Target User ID</th><th>Reason</th><th>Timestamp</th></tr>
+            <tr><th>User ID</th><th>Login</th><th>Bans</th><th>Unbans</th></tr>
           </thead>
-          <tbody id="actions-table-body"></tbody>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="flags" aria-label="Flags Section">
+      <h3>Flags</h3>
+      <div class="scrollable" aria-live="polite" aria-relevant="additions">
+        <table id="flags-table" aria-label="Flags table">
+          <thead>
+            <tr><th>Timestamp</th><th>Flagged User</th><th>Reason</th></tr>
+          </thead>
+          <tbody></tbody>
         </table>
       </div>
     </section>
   </main>
 
-  <footer>Made by Sage. | Powered by Flask & Discord API</footer>
+  <button id="auth-btn" aria-label="Login or Logout Button"></button>
 
   <script>
+    // Utility to format timestamps
     function formatDate(iso) {
-      let d = new Date(iso);
-      return d.toLocaleString();
+      const d = new Date(iso);
+      return d.toUTCString();
     }
 
-    async function fetchJson(url) {
-      let res = await fetch(url);
-      if (!res.ok) throw new Error('Network error');
-      return await res.json();
+    // Tabs logic
+    const tabs = {
+      dashboard: document.getElementById('dashboard'),
+      logs: document.getElementById('logs'),
+      users: document.getElementById('users'),
+      flags: document.getElementById('flags'),
+    };
+    const buttons = {
+      dashboard: document.getElementById('tab-dashboard'),
+      logs: document.getElementById('tab-logs'),
+      users: document.getElementById('tab-users'),
+      flags: document.getElementById('tab-flags'),
+    };
+
+    Object.entries(buttons).forEach(([key, btn]) => {
+      btn.addEventListener('click', () => {
+        // Activate button and section
+        Object.values(buttons).forEach(b => b.classList.remove('active'));
+        Object.values(tabs).forEach(s => s.classList.remove('active'));
+        btn.classList.add('active');
+        tabs[key].classList.add('active');
+      });
+    });
+
+    // Auth button logic - rendered server-side
+    const authBtn = document.getElementById('auth-btn');
+
+    // These are rendered server-side by Flask:
+    const logged_in = {{ 'true' if logged_in else 'false' }};
+    const login_url = "{{ login_url|default('') }}";
+
+    if (!logged_in) {
+      authBtn.textContent = 'Login';
+      authBtn.onclick = () => {
+        window.location.href = login_url;
+      };
+    } else {
+      authBtn.textContent = 'Logout';
+      authBtn.onclick = () => {
+        window.location.href = "/logout";
+      };
     }
 
-    async function loadServerInfo() {
+    // Fetch and update dashboard stats
+    async function updateStats() {
       try {
-        const data = await fetchJson('/api/server-info');
-        document.getElementById('server-icon').style.backgroundImage = `url(${data.icon_url})`;
-        document.getElementById('server-name').textContent = `Name: ${data.name}`;
-        document.getElementById('server-created').textContent =
+        const res = await fetch('/api/stats');
+        if (!res.ok) throw new Error('Failed to fetch stats');
+        const data = await res.json();
+
+        document.getElementById('visits-count').textContent = data.visits || 0;
+        document.getElementById('bans-count').textContent = data.bans?.length || 0;
+        document.getElementById('notes-count').textContent = data.notes?.length || 0;
+      } catch(e) {
+        console.warn('Stats update failed:', e);
+      }
+    }
+
+    // Populate audit logs table
+    async function updateAuditLogs() {
+      try {
+        const res = await fetch('/api/audit_logs');
+        if (!res.ok) throw new Error('Failed to fetch audit logs');
+        const logs = await res.json();
+
+        const tbody = document.querySelector('#logs-table tbody');
+        tbody.innerHTML = '';
+        for (const log of logs) {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${new Date(log.datetime).toUTCString()}</td>
+            <td>${log.actor}</td>
+            <td>${log.action}</td>
+            <td>${log.details}</td>
+          `;
