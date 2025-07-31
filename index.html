@@ -2,421 +2,162 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Soft Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    /* Reset */
-    *, *::before, *::after {
+    :root {
+      --bg: #1e1f29;
+      --panel: #2a2b38;
+      --accent: #8bd3dd;
+      --text: #f2f2f2;
+      --hover: #3d3e4e;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
-      margin: 0; padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      user-select: none;
+      font-family: 'Segoe UI', sans-serif;
     }
 
     body {
-      background: linear-gradient(135deg, #6e8efb, #a777e3);
-      color: #f0f0f3;
-      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    aside {
+      width: 230px;
+      background: var(--panel);
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      overflow-x: hidden;
+      gap: 20px;
+      border-right: 2px solid var(--accent);
     }
 
-    header {
-      padding: 1.5rem 2rem;
-      font-weight: 700;
-      font-size: 1.8rem;
-      letter-spacing: 2px;
-      color: #fff;
-      text-shadow: 0 0 10px #fff8;
+    aside h1 {
+      font-size: 1.4em;
+      text-align: center;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .nav-link {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-    }
-
-    header svg {
-      width: 32px;
-      height: 32px;
-      fill: #fff;
-      animation: pulse 2.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.1); }
-    }
-
-    nav {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      padding: 1rem 0;
-      box-shadow: 0 2px 10px #4a47a3a8;
-    }
-
-    nav button {
-      background: none;
-      border: none;
-      color: #ddd;
-      font-size: 1rem;
-      cursor: pointer;
-      padding: 0.4rem 1rem;
+      padding: 12px;
       border-radius: 10px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      position: relative;
-      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
     }
 
-    nav button.active,
-    nav button:hover {
-      background: #fff;
-      color: #5a3ea1;
-      box-shadow: 0 0 10px #fff8;
+    .nav-link:hover {
+      background: var(--hover);
+    }
+
+    .nav-link i {
+      margin-right: 10px;
+      color: var(--accent);
     }
 
     main {
-      flex-grow: 1;
-      padding: 2rem;
-      max-width: 960px;
-      margin: 0 auto 2rem auto;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 25px;
-      box-shadow: 0 10px 30px #4a47a380;
-      backdrop-filter: blur(12px);
-      color: #eee;
-      overflow: hidden;
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
     }
 
     section {
-      display: none;
-      animation: fadeInUp 0.7s ease forwards;
-    }
-    section.active {
-      display: block;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Cards */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-      gap: 1.6rem;
-      margin-bottom: 2rem;
-    }
-
-    .card {
-      background: #5a3ea1cc;
-      border-radius: 20px;
-      padding: 1.5rem;
-      box-shadow: 0 6px 20px #3e3276aa;
-      transition: transform 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px #5a3ea1bb;
-    }
-
-    .card h3 {
-      font-weight: 700;
-      margin-bottom: 0.3rem;
-      font-size: 1.3rem;
-      color: #fff;
-      letter-spacing: 1.2px;
-    }
-
-    .card p {
-      font-weight: 600;
-      font-size: 2.6rem;
-      color: #ffe8ff;
-      text-shadow: 0 0 6px #c49bffcc;
-    }
-
-    /* Table */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #5a3ea1cc;
+      margin-bottom: 40px;
+      background: var(--panel);
+      padding: 20px;
       border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 6px 20px #3e3276aa;
+      box-shadow: 0 0 10px #00000040;
+      transition: 0.3s ease;
     }
 
-    thead {
-      background: #4b2f90;
+    section:hover {
+      transform: translateY(-3px);
     }
 
-    th, td {
-      padding: 0.75rem 1rem;
-      text-align: left;
-      color: #eee;
-      font-weight: 600;
-      font-size: 0.95rem;
-      border-bottom: 1px solid #6b49b5;
+    section h2 {
+      margin-bottom: 10px;
+      color: var(--accent);
     }
 
-    tbody tr:hover {
-      background: #6b49b5cc;
-      cursor: default;
-      color: #fff;
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      left: 20px;
+      font-size: 0.9em;
+      color: #aaa;
     }
 
-    /* Scroll for logs */
-    .scrollable {
-      max-height: 350px;
-      overflow-y: auto;
-      margin-top: 1rem;
-      border-radius: 12px;
-      scrollbar-width: thin;
-      scrollbar-color: #a07cf0 transparent;
-    }
-    .scrollable::-webkit-scrollbar {
-      width: 10px;
-    }
-    .scrollable::-webkit-scrollbar-thumb {
-      background-color: #a07cf0;
-      border-radius: 10px;
-    }
-    .scrollable::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 1rem 0;
-      color: #dcd6f7cc;
-      font-size: 0.85rem;
-      letter-spacing: 1.1px;
-      font-weight: 600;
-      user-select: none;
-    }
-    footer a {
-      color: #f5e1ffcc;
-      text-decoration: none;
-      font-weight: 700;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Cute icon style */
-    .icon {
-      width: 26px;
-      height: 26px;
-      vertical-align: middle;
-      margin-right: 8px;
-      fill: #f3e8ffdd;
-      filter: drop-shadow(0 0 1px #9a7fffcc);
-      transition: transform 0.3s ease;
-    }
-    nav button.active .icon,
-    nav button:hover .icon {
-      transform: scale(1.2) rotate(10deg);
-      filter: drop-shadow(0 0 5px #d6bfff);
-    }
-
-    /* Button style for login/logout */
-    #auth-btn {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      background: #fff;
-      border-radius: 30px;
-      padding: 0.6rem 1.4rem;
-      color: #5a3ea1;
-      font-weight: 700;
-      font-size: 1rem;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 15px #a77dfd;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      user-select: none;
-      z-index: 99;
-    }
-    #auth-btn:hover {
-      background: #7d5eff;
-      color: #fff;
-      box-shadow: 0 6px 25px #8c68ff;
+    .footer span {
+      color: var(--accent);
     }
   </style>
 </head>
 <body>
-  <header>
-    <svg class="icon" viewBox="0 0 64 64" aria-hidden="true">
-      <circle cx="32" cy="32" r="30" stroke="#fff" stroke-width="3" fill="none" />
-      <path d="M20 40 L32 20 L44 40 Z" fill="#b57aff" />
-    </svg>
-    Soft Dashboard
-  </header>
-
-  <nav>
-    <button id="tab-dashboard" class="active" aria-label="Dashboard Tab">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z"/></svg>Dashboard
-    </button>
-    <button id="tab-logs" aria-label="Audit Logs Tab">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 6h10v2H4zm0 6h16v2H4z"/></svg>Audit Logs
-    </button>
-    <button id="tab-users" aria-label="User Actions Tab">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>User Actions
-    </button>
-    <button id="tab-flags" aria-label="Flags Tab">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M14.4 6l-.9 3h4.5l-1.8 6h-4.5l.9-3H7.2l.9-3H14.4z"/></svg>Flags
-    </button>
-  </nav>
+  <aside>
+    <h1>Soft Dashboard</h1>
+    <div class="nav-link"><i class="fas fa-server"></i> Server Info</div>
+    <div class="nav-link"><i class="fas fa-ban"></i> Ban List</div>
+    <div class="nav-link"><i class="fas fa-scroll"></i> Audit Logs</div>
+    <div class="nav-link"><i class="fas fa-chart-line"></i> Analytics</div>
+    <div class="nav-link"><i class="fas fa-shield-alt"></i> Security</div>
+    <div class="footer">Made with ❤️ by <span>Sage</span></div>
+  </aside>
 
   <main>
-    <section id="dashboard" class="active" aria-label="Dashboard Section">
-      <div class="stats-grid">
-        <div class="card">
-          <h3>Visits</h3>
-          <p id="visits-count">0</p>
-        </div>
-        <div class="card">
-          <h3>Total Bans</h3>
-          <p id="bans-count">0</p>
-        </div>
-        <div class="card">
-          <h3>Total Notes</h3>
-          <p id="notes-count">0</p>
-        </div>
-      </div>
-      <h3>Welcome to your Soft Dashboard!</h3>
-      <p>This dashboard shows your server's live stats and audit info. Use the tabs above to explore.</p>
+    <section id="server-info">
+      <h2>🔧 Real-Time Server Info</h2>
+      <pre id="serverStats">Loading...</pre>
     </section>
 
-    <section id="logs" aria-label="Audit Logs Section">
-      <h3>Audit Logs</h3>
-      <div class="scrollable" role="log" aria-live="polite" aria-relevant="additions">
-        <table id="logs-table" aria-label="Audit logs table">
-          <thead>
-            <tr><th>Time (UTC)</th><th>User</th><th>Action</th><th>Details</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+    <section id="ban-list">
+      <h2>🚫 Ban List</h2>
+      <ul id="banList">Loading...</ul>
     </section>
 
-    <section id="users" aria-label="User Actions Section">
-      <h3>User Actions</h3>
-      <div class="scrollable" aria-live="polite" aria-relevant="additions">
-        <table id="users-table" aria-label="User actions table">
-          <thead>
-            <tr><th>User ID</th><th>Login</th><th>Bans</th><th>Unbans</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+    <section id="audit-logs">
+      <h2>📜 Interactive Audit Logs</h2>
+      <ul id="logs">Loading...</ul>
     </section>
 
-    <section id="flags" aria-label="Flags Section">
-      <h3>Flags</h3>
-      <div class="scrollable" aria-live="polite" aria-relevant="additions">
-        <table id="flags-table" aria-label="Flags table">
-          <thead>
-            <tr><th>Timestamp</th><th>Flagged User</th><th>Reason</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+    <section id="analytics">
+      <h2>📊 Behavior Analytics</h2>
+      <pre id="analyticsData">Loading...</pre>
+    </section>
+
+    <section id="security">
+      <h2>🛡️ Security & Anti-Abuse</h2>
+      <ul id="securityTools">Loading...</ul>
     </section>
   </main>
 
-  <button id="auth-btn" aria-label="Login or Logout Button"></button>
-
   <script>
-    // Utility to format timestamps
-    function formatDate(iso) {
-      const d = new Date(iso);
-      return d.toUTCString();
+    async function loadData() {
+      const res = await fetch("/data");
+      const data = await res.json();
+
+      document.getElementById("serverStats").textContent = JSON.stringify(data.server_info, null, 2);
+      document.getElementById("analyticsData").textContent = JSON.stringify(data.analytics, null, 2);
+
+      const banList = document.getElementById("banList");
+      banList.innerHTML = data.bans.map(user => `<li>${user}</li>`).join("");
+
+      const logs = document.getElementById("logs");
+      logs.innerHTML = data.audit_logs.map(log => `<li>${log}</li>`).join("");
+
+      const sec = document.getElementById("securityTools");
+      sec.innerHTML = data.security.map(tool => `<li>${tool}</li>`).join("");
     }
 
-    // Tabs logic
-    const tabs = {
-      dashboard: document.getElementById('dashboard'),
-      logs: document.getElementById('logs'),
-      users: document.getElementById('users'),
-      flags: document.getElementById('flags'),
-    };
-    const buttons = {
-      dashboard: document.getElementById('tab-dashboard'),
-      logs: document.getElementById('tab-logs'),
-      users: document.getElementById('tab-users'),
-      flags: document.getElementById('tab-flags'),
-    };
-
-    Object.entries(buttons).forEach(([key, btn]) => {
-      btn.addEventListener('click', () => {
-        // Activate button and section
-        Object.values(buttons).forEach(b => b.classList.remove('active'));
-        Object.values(tabs).forEach(s => s.classList.remove('active'));
-        btn.classList.add('active');
-        tabs[key].classList.add('active');
-      });
-    });
-
-    // Auth button logic - rendered server-side
-    const authBtn = document.getElementById('auth-btn');
-
-    // These are rendered server-side by Flask:
-    const logged_in = {{ 'true' if logged_in else 'false' }};
-    const login_url = "{{ login_url|default('') }}";
-
-    if (!logged_in) {
-      authBtn.textContent = 'Login';
-      authBtn.onclick = () => {
-        window.location.href = login_url;
-      };
-    } else {
-      authBtn.textContent = 'Logout';
-      authBtn.onclick = () => {
-        window.location.href = "/logout";
-      };
-    }
-
-    // Fetch and update dashboard stats
-    async function updateStats() {
-      try {
-        const res = await fetch('/api/stats');
-        if (!res.ok) throw new Error('Failed to fetch stats');
-        const data = await res.json();
-
-        document.getElementById('visits-count').textContent = data.visits || 0;
-        document.getElementById('bans-count').textContent = data.bans?.length || 0;
-        document.getElementById('notes-count').textContent = data.notes?.length || 0;
-      } catch(e) {
-        console.warn('Stats update failed:', e);
-      }
-    }
-
-    // Populate audit logs table
-    async function updateAuditLogs() {
-      try {
-        const res = await fetch('/api/audit_logs');
-        if (!res.ok) throw new Error('Failed to fetch audit logs');
-        const logs = await res.json();
-
-        const tbody = document.querySelector('#logs-table tbody');
-        tbody.innerHTML = '';
-        for (const log of logs) {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${new Date(log.datetime).toUTCString()}</td>
-            <td>${log.actor}</td>
-            <td>${log.action}</td>
-            <td>${log.details}</td>
-          `;
+    loadData();
+  </script>
+</body>
+</html>
