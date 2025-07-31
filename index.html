@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cyber Admin Panel</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+    body {
+      margin: 0; padding: 0; font-family: 'Share Tech Mono', monospace;
+      background: #0f111a;
+      color: #33ffcc;
+      overflow-x: hidden;
+    }
+    header {
+      background: linear-gradient(90deg, #0f111a, #062230);
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid #33ffccaa;
+    }
+    header h1 {
+      margin: 0; font-size: 1.5rem;
+      color: #00ffe7;
+      letter-spacing: 2px;
+      text-shadow: 0 0 6px #00ffe7;
+    }
+    main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
+      gap: 2rem;
+    }
+    section {
+      background: #141a2c;
+      border: 1px solid #33ffcc44;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 0 20px #00ffe7aa;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+    section h2 {
+      margin: 0 0 1rem 0;
+      border-bottom: 1px solid #33ffcc55;
+      padding-bottom: 0.5rem;
+      font-weight: normal;
+      font-size: 1.3rem;
+      color: #00ffe7;
+      text-shadow: 0 0 5px #00ffe7aa;
+    }
+    .server-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid #33ffccaa;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 15px #00ffe7aa;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+    .stat {
+      font-size: 1.1rem;
+      margin: 0.3rem 0;
+      color: #33ffccdd;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #33ffccdd;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid #33ffcc44;
+      padding: 0.5rem;
+      text-align: left;
+    }
+    th {
+      background: #0f111a;
+      color: #00ffe7;
+      text-shadow: 0 0 3px #00ffe7bb;
+    }
+    tbody tr:hover {
+      background: #06223088;
+      cursor: default;
+    }
+    /* Scrollable tables */
+    .scroll-table {
+      overflow-x: auto;
+      max-height: 300px;
+      display: block;
+    }
+    footer {
+      margin: 4rem auto 2rem auto;
+      text-align: center;
+      color: #00ffe799;
+      font-size: 0.8rem;
+      user-select: none;
+    }
+    /* Button style */
+    button {
+      background: #00ffe7;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      margin: 0.1rem 0.3rem;
+      border-radius: 6px;
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: bold;
+      color: #0f111a;
+      cursor: pointer;
+      box-shadow: 0 0 8px #00ffe7bb;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background: #00ccb3;
+      box-shadow: 0 0 12px #00ccb3cc;
+    }
+    /* Search input */
+    input[type="search"] {
+      width: 100%;
+      padding: 0.4rem 0.6rem;
+      margin-bottom: 0.8rem;
+      border-radius: 6px;
+      border: 1px solid #33ffcc44;
+      background: #0f111a;
+      color: #33ffcc;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.95rem;
+      box-shadow: inset 0 0 6px #00ffe7aa;
+    }
+    /* Cyberpunk neon glow */
+    .glow-text {
+      color: #00ffe7;
+      text-shadow:
+         0 0 5px #00ffe7,
+         0 0 10px #00ffe7,
+         0 0 20px #00ffe7,
+         0 0 40px #00ffe7;
+    }
+    /* Loader animation */
+    .loader {
+      border: 4px solid #33ffcc33;
+      border-top: 4px solid #00ffe7;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      animation: spin 1s linear infinite;
+      margin: 2rem auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class="glow-text">Soft Admin Panel</h1>
+    <a href="/logout" style="color:#00ffe7;text-decoration:none;font-weight:bold;">Logout</a>
+  </header>
+  <main>
+    <section id="server-info">
+      <h2>Server Info</h2>
+      <div class="server-icon" id="server-icon"></div>
+      <div class="stat" id="server-name"></div>
+      <div class="stat" id="server-created"></div>
+      <div class="stat" id="member-count"></div>
+      <div class="stat" id="online-count"></div>
+      <div class="stat" id="channels-count"></div>
+      <div class="stat" id="roles-count"></div>
+    </section>
+
+    <section id="ban-list">
+      <h2>Ban List</h2>
+      <input type="search" id="ban-search" placeholder="Search by user ID or reason..." />
+      <div class="scroll-table">
+        <table>
+          <thead>
+            <tr><th>User ID</th><th>Reason</th><th>Banned At</th></tr>
+          </thead>
+          <tbody id="ban-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="staff-actions">
+      <h2>Staff Action Log</h2>
+      <input type="search" id="action-search" placeholder="Search by mod, target or reason..." />
+      <div class="scroll-table">
+        <table>
+          <thead>
+            <tr><th>Moderator ID</th><th>Action</th><th>Target User ID</th><th>Reason</th><th>Timestamp</th></tr>
+          </thead>
+          <tbody id="actions-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>Made by Sage. | Powered by Flask & Discord API</footer>
+
+  <script>
+    function formatDate(iso) {
+      let d = new Date(iso);
+      return d.toLocaleString();
+    }
+
+    async function fetchJson(url) {
+      let res = await fetch(url);
+      if (!res.ok) throw new Error('Network error');
+      return await res.json();
+    }
+
+    async function loadServerInfo() {
+      try {
+        const data = await fetchJson('/api/server-info');
+        document.getElementById('server-icon').style.backgroundImage = `url(${data.icon_url})`;
+        document.getElementById('server-name').textContent = `Name: ${data.name}`;
+        document.getElementById('server-created').textContent =
